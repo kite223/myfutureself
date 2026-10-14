@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>미래의 나를 담은 연설문 쓰기</title>
+<style>
+  :root{
+    --navy:#1F3A5F; --navy-2:#2C4F7C; --coral:#E0674A; --coral-soft:#FDEDE8;
+    --sky:#EAF1F8; --sky-2:#F5F8FC; --cream:#FFF6E9; --cream-line:#F2C893;
+    --ink:#1E2430; --gray:#6B7280; --line:#D5DEE8; --ok:#2E8B57; --ok-soft:#E7F5EC; --warn:#C27C0E; --warn-soft:#FFF4DE; --bad:#C2412D;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:"Pretendard","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); background:#F3F6FA; line-height:1.6; -webkit-text-size-adjust:100%;
+  }
+  button{font-family:inherit}
+
+  /* ---------- 상단 ---------- */
+  .top{background:var(--navy); color:#fff; padding:22px 16px 26px}
+  .top-in{max-width:1280px; margin:0 auto}
+  .brand{font-size:13px; color:#C9D6E6; letter-spacing:.02em}
+  .brand b{color:#FFB39F; font-weight:700}
+  .top h1{margin:6px 0 4px; font-size:28px; letter-spacing:-.02em}
+  .top p{margin:0; color:#DCE6F2; font-size:15px}
+  .rules{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
+  .rule{background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22); border-radius:999px; padding:4px 12px; font-size:13px}
+  .rule.red{background:var(--coral); border-color:var(--coral); font-weight:700}
+
+  /* ---------- 레이아웃 ---------- */
+  .layout{max-width:1280px; margin:-12px auto 0; padding:0 16px 120px; display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:20px; align-items:start}
+  .card{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:20px 22px; margin-bottom:16px; box-shadow:0 1px 2px rgba(16,24,40,.04)}
+  .card-h{display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap}
+  .num{flex:none; width:28px; height:28px; border-radius:50%; background:var(--navy); color:#fff; font-weight:700; font-size:14px; display:grid; place-items:center}
+  .card-h h2{margin:0; font-size:18px; color:var(--navy); letter-spacing:-.01em}
+  .from{margin-left:auto; font-size:12px; color:var(--coral); background:var(--coral-soft); border-radius:999px; padding:3px 10px; font-weight:600}
+  .opt{font-size:12px; color:var(--gray); background:var(--sky); border-radius:999px; padding:3px 10px}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .field{display:flex; flex-direction:column; gap:5px; margin-bottom:12px}
+  .field:last-child{margin-bottom:0}
+  .field label{font-size:14px; font-weight:700; color:var(--navy)}
+  .field label small{font-weight:400; color:var(--gray); margin-left:6px; font-size:12px}
+  input[type=text], textarea{
+    width:100%; font:inherit; font-size:16px; color:var(--ink); border:1.5px solid var(--line); border-radius:10px; padding:10px 12px; background:var(--sky-2);
+    transition:border-color .15s, background .15s;
+  }
+  textarea{resize:vertical; min-height:68px; line-height:1.55}
+  input[type=text]:focus, textarea:focus{outline:none; border-color:var(--navy-2); background:#fff}
+  input.filled, textarea.filled{background:#fff}
+  ::placeholder{color:#A3ADBB}
+
+  /* ---------- 본문 편집기 ---------- */
+  .toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:10px; background:var(--sky); border:1.5px solid var(--line); border-bottom:none; border-radius:10px 10px 0 0; position:sticky; top:0; z-index:5}
+  .tb-group{display:flex; gap:6px; align-items:center; flex-wrap:wrap}
+  .tb-label{font-size:12px; color:var(--gray); margin-right:2px}
+  .tb-sep{width:1px; height:24px; background:var(--line); margin:0 4px}
+  .tbtn{border:1.5px solid var(--line); background:#fff; border-radius:8px; padding:6px 10px; font-size:14px; cursor:pointer; color:var(--ink); line-height:1.2; touch-action:manipulation}
+  .tbtn:hover{border-color:var(--navy-2)}
+  .tbtn.u{text-decoration:underline; font-weight:700; min-width:40px}
+  .tbtn.tag{font-weight:700}
+  .tbtn.t-cred{color:var(--navy); border-color:#B9C8DA}
+  .tbtn.t-logic{color:#1D6B8F; border-color:#B5D5E3}
+  .tbtn.t-emo{color:var(--coral); border-color:#F2C2B5}
+  .chips{display:flex; flex-wrap:wrap; gap:6px; padding:8px 10px; background:#fff; border-left:1.5px solid var(--line); border-right:1.5px solid var(--line)}
+  .chip{border:1px dashed #B9C8DA; background:var(--sky-2); color:var(--navy); border-radius:999px; padding:3px 10px; font-size:13px; cursor:pointer; touch-action:manipulation}
+  .chip:hover{background:var(--sky)}
+  .editor{
+    min-height:420px; border:1.5px solid var(--line); border-radius:0 0 10px 10px; padding:16px 18px; font-size:17px; line-height:1.9; background:#fff;
+    outline:none; white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere;
+  }
+  .editor:focus{border-color:var(--navy-2)}
+  .editor.is-empty::before{content:attr(data-ph); color:#A3ADBB; pointer-events:none; white-space:pre-line}
+  .editor u{text-decoration-color:var(--coral); text-decoration-thickness:2px; text-underline-offset:4px}
+  .hint{font-size:13px; color:var(--gray); margin:8px 2px 0}
+  .hint b{color:var(--navy)}
+
+  /* ---------- 사이드 ---------- */
+  .side{position:sticky; top:16px}
+  .count-card{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:18px; margin-bottom:14px}
+  .count-top{display:flex; align-items:baseline; gap:6px}
+  .count-num{font-size:40px; font-weight:800; color:var(--navy); letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+  .count-unit{color:var(--gray); font-size:14px}
+  .count-sub{font-size:12px; color:var(--gray)}
+  .meter{position:relative; height:12px; background:#EEF2F7; border-radius:999px; margin:12px 0 6px; overflow:visible}
+  .meter-fill{height:100%; width:0; background:var(--warn); border-radius:999px; transition:width .25s, background .25s}
+  .meter-mark{position:absolute; top:-4px; width:2px; height:20px; background:#9AA7B8}
+  .meter-scale{position:relative; height:16px; font-size:11px; color:var(--gray)}
+  .meter-scale span{position:absolute; transform:translateX(-50%)}
+  .count-msg{margin-top:8px; font-size:14px; font-weight:600; padding:8px 10px; border-radius:8px; background:var(--warn-soft); color:var(--warn)}
+  .count-msg.ok{background:var(--ok-soft); color:var(--ok)}
+  .count-msg.over{background:#FDECEA; color:var(--bad)}
+
+  .check-card{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:14px}
+  .check-card h3{margin:0 0 4px; font-size:15px; color:var(--navy)}
+  .check-card .desc{font-size:12px; color:var(--gray); margin:0 0 10px}
+  .checks{list-style:none; margin:0; padding:0}
+  .checks li{display:flex; gap:9px; align-items:flex-start; font-size:14px; padding:6px 0; border-top:1px dashed #E5EAF0}
+  .checks li:first-child{border-top:none}
+  .dot{flex:none; width:20px; height:20px; border-radius:50%; border:2px solid #C5CFDB; margin-top:1px; display:grid; place-items:center; font-size:12px; color:#fff; font-weight:800}
+  .checks li.done .dot{background:var(--ok); border-color:var(--ok)}
+  .checks li.done .dot::after{content:"✓"}
+  .checks li .meta{margin-left:auto; color:var(--gray); font-size:12px; white-space:nowrap; padding-left:6px}
+  .checks li.manual{cursor:pointer}
+  .checks li.manual .dot{border-radius:5px}
+
+  .save-btn{width:100%; border:none; background:var(--coral); color:#fff; font-size:17px; font-weight:800; padding:14px; border-radius:12px; cursor:pointer; box-shadow:0 4px 12px rgba(224,103,74,.3)}
+  .save-btn:hover{filter:brightness(1.05)}
+  .save-state{font-size:12px; color:var(--gray); text-align:center; margin:8px 0 0}
+  .howto{font-size:13px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px 14px; margin-top:12px}
+  .howto summary{cursor:pointer; font-weight:700; color:var(--navy)}
+  .howto ol{margin:8px 0 2px; padding-left:18px}
+  .howto li{margin-bottom:4px}
+  .reset{display:block; margin:12px auto 0; background:none; border:none; color:var(--gray); font-size:12px; text-decoration:underline; cursor:pointer}
+
+  /* ---------- 예시 문장 틀 ---------- */
+  .body-wrap{display:grid; grid-template-columns:minmax(0,1fr) 330px; gap:16px; align-items:start}
+  .ed-col{min-width:0}
+  .tpl{border:1.5px solid var(--cream-line); background:var(--cream); border-radius:12px; padding:14px; position:sticky; top:12px}
+  .tpl h3{margin:0 0 2px; font-size:15px; color:var(--navy)}
+  .tpl .tpl-desc{font-size:12px; color:var(--gray); margin:0 0 10px; line-height:1.5}
+  .tpl .legend{display:flex; gap:10px; flex-wrap:wrap; font-size:12px; margin-bottom:10px}
+  .tabs{display:flex; gap:4px; margin-bottom:10px; flex-wrap:wrap}
+  .tab{flex:1; border:1.5px solid var(--cream-line); background:#fff; border-radius:8px; padding:6px 4px; font-size:13px; font-weight:700; color:var(--navy); cursor:pointer; white-space:nowrap}
+  .tab.on{background:var(--navy); border-color:var(--navy); color:#fff}
+  .tpl-role{font-size:12px; font-weight:700; color:var(--coral); margin-bottom:2px}
+  .tpl-tip{font-size:12px; color:var(--gray); margin-bottom:8px}
+  .variants{display:flex; gap:6px; margin-bottom:8px}
+  .variant{border:1px solid #D9C4A3; background:#fff; border-radius:999px; padding:2px 10px; font-size:12px; cursor:pointer; color:var(--ink)}
+  .variant.on{background:var(--coral); border-color:var(--coral); color:#fff; font-weight:700}
+  .tpl-text{background:#fff; border-radius:10px; padding:12px; font-size:14.5px; line-height:1.85; border:1px solid #F0DFC2; word-break:keep-all}
+  .fill{background:#FFE1D6; color:#A3381F; border-radius:4px; padding:0 2px; font-weight:600}
+  .tilde{background:var(--sky); color:var(--navy); border-radius:4px; padding:0 5px; font-weight:800}
+  .tpl-tag{font-size:12px; color:var(--navy); margin-top:8px}
+  .tpl-btn{width:100%; margin-top:10px; border:1.5px solid var(--navy); background:#fff; color:var(--navy); font-weight:700; font-size:14px; padding:9px; border-radius:10px; cursor:pointer}
+  .tpl-btn:hover{background:var(--sky)}
+  .tpl-note{font-size:11.5px; color:var(--gray); margin:8px 0 0; line-height:1.5}
+  .tpl-toggle{display:none}
+  @media (max-width:1180px){
+    .body-wrap{grid-template-columns:1fr}
+    .tpl{position:static; order:-1}
+    .tpl-toggle{display:block; width:100%; border:1.5px dashed var(--cream-line); background:var(--cream); color:var(--navy); font-weight:700; padding:10px; border-radius:10px; cursor:pointer; margin-bottom:10px; font-size:14px}
+    .tpl.closed{display:none}
+  }
+
+  /* ---------- 안전장치 ---------- */
+  .banner{max-width:1280px; margin:12px auto 0; padding:0 16px; position:relative; z-index:2}
+  .banner-in{display:flex; gap:10px; align-items:center; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:600}
+  .banner-in.ok{background:var(--ok-soft); color:var(--ok); border:1px solid #BFE3CC}
+  .banner-in.bad{background:#FDECEA; color:var(--bad); border:1px solid #F5C2BA}
+  .banner-in button{margin-left:auto; border:none; background:transparent; color:inherit; font-size:18px; cursor:pointer; line-height:1}
+  .banner + .layout{margin-top:16px}
+  .safety{background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-top:12px; font-size:13px}
+  .safety b{color:var(--navy)}
+  .safety p{margin:4px 0 8px; color:var(--gray); font-size:12px; line-height:1.5}
+  .sbtn{display:block; width:100%; text-align:left; border:1px solid var(--line); background:var(--sky-2); border-radius:8px; padding:8px 10px; margin-top:6px; font-size:13px; cursor:pointer; color:var(--ink)}
+  .sbtn:hover{border-color:var(--navy-2)}
+  .hist{list-style:none; margin:10px 0 0; padding:0; max-height:50vh; overflow:auto}
+  .hist li{display:flex; gap:10px; align-items:center; border-top:1px solid #EEF2F7; padding:9px 0}
+  .hist .h-time{font-weight:800; color:var(--navy); min-width:52px}
+  .hist .h-meta{font-size:12px; color:var(--gray); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .hist button{border:1.5px solid var(--navy); background:#fff; color:var(--navy); border-radius:8px; padding:5px 10px; font-weight:700; cursor:pointer; flex:none}
+
+  /* 모바일 하단 바 */
+  .mbar{display:none}
+
+  /* ---------- 모달 ---------- */
+  .modal-bg{position:fixed; inset:0; background:rgba(20,30,45,.55); display:none; align-items:center; justify-content:center; padding:16px; z-index:50}
+  .modal-bg.open{display:flex}
+  .modal{background:#fff; border-radius:16px; max-width:480px; width:100%; padding:22px; max-height:90vh; overflow:auto}
+  .modal h3{margin:0 0 8px; color:var(--navy); font-size:19px}
+  .modal ul{margin:8px 0 14px; padding-left:20px}
+  .modal li{margin-bottom:4px}
+  .modal .steps{background:var(--sky); border-radius:10px; padding:12px 14px; font-size:14px}
+  .modal .steps ol{margin:6px 0 0; padding-left:18px}
+  .modal-btns{display:flex; gap:8px; margin-top:16px}
+  .modal-btns button{flex:1; padding:12px; border-radius:10px; font-size:15px; font-weight:700; cursor:pointer}
+  .btn-ghost{background:#fff; border:1.5px solid var(--line); color:var(--ink)}
+  .btn-main{background:var(--coral); border:none; color:#fff}
+
+  .toast{position:fixed; left:50%; bottom:90px; transform:translateX(-50%) translateY(20px); background:var(--ink); color:#fff; padding:10px 16px; border-radius:10px; font-size:14px; opacity:0; transition:all .2s; pointer-events:none; z-index:60}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr}
+    .side{position:static}
+    .mbar{display:flex; position:fixed; left:0; right:0; bottom:0; background:#fff; border-top:1px solid var(--line); padding:10px 16px; gap:12px; align-items:center; z-index:40}
+    .mbar .mcount{font-weight:800; color:var(--navy); font-size:18px}
+    .mbar .mcount small{font-weight:400; color:var(--gray); font-size:12px}
+    .mbar button{margin-left:auto; border:none; background:var(--coral); color:#fff; font-weight:800; padding:10px 16px; border-radius:10px; font-size:15px}
+  }
+  @media (max-width:560px){
+    .grid2{grid-template-columns:1fr}
+    .top h1{font-size:23px}
+    .card{padding:16px}
+    .from{margin-left:0}
+  }
+
+  /* ---------- 인쇄(PDF) 전용 ---------- */
+  #print{display:none}
+  @page{size:A4; margin:16mm 17mm 16mm}
+  @media print{
+    body{background:#fff}
+    body > *:not(#print){display:none !important}
+    #print{display:block; font-size:10.5pt; line-height:1.75; color:#000}
+    .p-head{display:flex; justify-content:space-between; font-size:8.5pt; color:#555; border-bottom:1.5px solid var(--navy); padding-bottom:4px; margin-bottom:12px}
+    .p-title{text-align:center; font-size:17pt; font-weight:800; margin:6px 0 14px; letter-spacing:-.01em}
+    .p-title .lb{font-size:10pt; font-weight:700; color:#555; margin-right:6px; vertical-align:middle}
+    .p-sec{margin-bottom:10px; break-inside:avoid}
+    .p-lb{font-weight:800; color:var(--navy)}
+    .p-sit{margin:2px 0 0 0; padding:0; list-style:none}
+    .p-sit li{padding-left:1em; text-indent:-0.6em}
+    .p-body{margin-top:4px; text-align:left; word-break:keep-all; overflow-wrap:anywhere}
+    .p-body p{margin:0 0 0; text-indent:0}
+    .p-body p + p{margin-top:.35em}
+    .p-body u{text-decoration-thickness:1.2px; text-underline-offset:2.5px}
+    .p-body .tg{font-weight:800; font-size:9.5pt}
+    .p-body .tg.c{color:var(--navy)} .p-body .tg.l{color:#1D6B8F} .p-body .tg.e{color:var(--coral)}
+    .p-count{text-align:right; font-weight:700; margin-top:4px}
+    .p-msg{margin-top:16px; border:1px dashed #999; border-radius:6px; padding:8px 12px; break-inside:avoid; font-size:10pt}
+    .p-msg .p-lb{color:#555}
+    .p-foot{margin-top:14px; font-size:8pt; color:#777; text-align:right}
+    *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><b>말이 자라는 국어 시간</b> · 계성고 2학년 화법과 언어 · 수행평가 1 · 2차시</div>
+    <h1>미래의 나를 담은 연설문 쓰기</h1>
+    <p>1차시 설계 활동지를 옆에 두고, 설계도대로 연설문을 조립해 봐요.</p>
+    <div class="rules">
+      <span class="rule red">AI 사용 금지</span>
+      <span class="rule">다른 글·연설 옮겨 쓰기는 표절로 최하점</span>
+      <span class="rule">수업 시간 안에 완성·제출</span>
+      <span class="rule">쓰는 내용은 이 기기에 자동 저장돼요</span>
+    </div>
+  </div>
+</header>
+
+<div class="banner" id="banner" hidden></div>
+
+<main class="layout">
+  <section>
+    <!-- 1 기본 정보 -->
+    <div class="card">
+      <div class="card-h"><span class="num">1</span><h2>나는 누구?</h2></div>
+      <div class="grid2">
+        <div class="field"><label for="sid">학번</label><input type="text" id="sid" inputmode="numeric" placeholder="예) 20001" autocomplete="off"></div>
+        <div class="field"><label for="sname">이름</label><input type="text" id="sname" placeholder="예) 김계성" autocomplete="off"></div>
+      </div>
+    </div>
+
+    <!-- 2 연설 상황 -->
+    <div class="card">
+      <div class="card-h"><span class="num">2</span><h2>연설 상황</h2><span class="from">활동지 3-1에서 옮기기</span></div>
+      <div class="grid2">
+        <div class="field"><label for="when">연설 시점 <small>10~20년 뒤</small></label><input type="text" id="when" placeholder="예) 2041년" autocomplete="off"></div>
+        <div class="field"><label for="who">미래의 나 <small>직업·역할</small></label><input type="text" id="who" placeholder="예) 기후 데이터 분석가" autocomplete="off"></div>
+        <div class="field"><label for="event">연설 행사</label><input type="text" id="event" placeholder="예) 모교 개교기념 진로 특강" autocomplete="off"></div>
+        <div class="field"><label for="aud">청중</label><input type="text" id="aud" placeholder="예) 모교 2학년 후배들" autocomplete="off"></div>
+      </div>
+      <div class="field"><label for="purpose">연설 목적 <small>청중이 연설을 듣고 어떻게 생각하고·느끼고·행동하기를 바라나요?</small></label>
+        <textarea id="purpose" rows="2" placeholder="예) 기후 위기를 ‘나의 문제’로 받아들이고, 작은 탐구를 시작하도록 설득하기"></textarea></div>
+    </div>
+
+    <!-- 3 핵심 메시지 & 제목 -->
+    <div class="card">
+      <div class="card-h"><span class="num">3</span><h2>핵심 메시지와 제목</h2><span class="from">활동지 3-4 · 5-2의 ★최종</span></div>
+      <div class="field"><label for="msg">핵심 메시지 <small>청중이 딱 한 문장만 기억한다면?</small></label>
+        <textarea id="msg" rows="2" placeholder="예) 기후 위기를 막는 힘은 거창한 결심이 아니라, 궁금한 것을 끝까지 확인해 보는 작은 습관에서 시작된다."></textarea></div>
+      <div class="field"><label for="title">연설문 제목</label>
+        <input type="text" id="title" placeholder="예) 끝까지 확인하는 사람이 세상을 바꿉니다" autocomplete="off"></div>
+    </div>
+
+    <!-- 4 본문 -->
+    <div class="card">
+      <div class="card-h"><span class="num">4</span><h2>연설문 본문</h2><span class="from">활동지 5-1 개요 순서대로</span></div>
+      <button type="button" class="tpl-toggle" id="tplToggle">글을 어떻게 시작할지 막막하다면? 예시 문장 틀 보기 ▾</button>
+      <div class="body-wrap">
+        <div class="ed-col">
+      <div class="toolbar" id="toolbar">
+            <div class="tb-group">
+              <span class="tb-label">전략 표시</span>
+              <button type="button" class="tbtn tag t-cred" data-tag="【공신력】">【공신력】</button>
+              <button type="button" class="tbtn tag t-logic" data-tag="【이성】">【이성】</button>
+              <button type="button" class="tbtn tag t-emo" data-tag="【감성】">【감성】</button>
+            </div>
+            <span class="tb-sep"></span>
+            <div class="tb-group">
+              <span class="tb-label">연결 표현</span>
+              <button type="button" class="tbtn u" id="btnU" title="글자를 드래그한 뒤 누르세요 (Ctrl+U)">밑줄</button>
+            </div>
+          </div>
+          <div class="chips" id="chips" aria-label="연결 표현 넣기">
+            <span class="tb-label" style="align-self:center">눌러서 넣기 →</span>
+          </div>
+          <div class="editor is-empty" id="editor" contenteditable="true" spellcheck="false"
+            data-ph="안녕하십니까, 여러분. ○○년 뒤의 저, ○○○입니다.&#10;&#10;활동지 5-1의 ‘처음 → 중간 1 → 중간 2 → 끝’ 순서대로 써 보세요.&#10;문단을 바꿀 때는 Enter를 누르면 돼요."></div>
+          <p class="hint"><b>전략 표시</b> 그 전략을 쓴 문장 끝에 커서를 두고 버튼을 누르세요. &nbsp;·&nbsp; <b>연결 표현</b> 글자를 드래그한 뒤 ‘밑줄’ 버튼을 누르거나, 위의 연결 표현을 눌러 넣으세요.</p>
+        </div>
+        <aside class="tpl closed" id="tpl" aria-label="예시 문장 틀">
+          <h3>막막할 때 쓰는 예시 문장 틀</h3>
+          <p class="tpl-desc">꼭 이대로 쓰지 않아도 돼요. 시작이 어려울 때 빌려 쓰고, 내 말로 바꿔 가세요.</p>
+          <div class="legend"><span><span class="fill">( )</span> 내 내용으로 바꾸기 · 괄호도 지우기</span><span><span class="tilde">~</span> 이어서 내가 쓰기</span></div>
+          <div class="tabs" id="tplTabs"></div>
+          <div id="tplBody"></div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- 5 미래의 나가 지금의 나에게 -->
+    <div class="card">
+      <div class="card-h"><span class="num">5</span><h2>미래의 나가 지금의 나에게</h2><span class="opt">선택 · 점수에 반영하지 않아요</span></div>
+      <div class="field"><label for="letter">연설을 마친 미래의 내가, 지금 이 글을 쓰고 있는 나에게 건네는 한두 문장</label>
+        <textarea id="letter" rows="2" placeholder="예) 그때 끝까지 기록을 놓지 않아서 고마워. 지금의 망설임도 언젠가 너의 이야기가 될 거야."></textarea></div>
+    </div>
+  </section>
+
+  <!-- 사이드 -->
+  <aside class="side">
+    <div class="count-card">
+      <div class="count-sub">본문 글자 수 · 띄어쓰기 포함</div>
+      <div class="count-top"><span class="count-num" id="cnt">0</span><span class="count-unit">자 / 700~1,000자</span></div>
+      <div class="meter" aria-hidden="true">
+        <div class="meter-fill" id="meterFill"></div>
+        <div class="meter-mark" style="left:58.33%"></div>
+        <div class="meter-mark" style="left:83.33%"></div>
+      </div>
+      <div class="meter-scale" aria-hidden="true"><span style="left:0;transform:none">0</span><span style="left:58.33%">700</span><span style="left:83.33%">1,000</span></div>
+      <div class="count-msg" id="cntMsg">첫 문장이 제일 어려워요. 활동지 5-1의 ‘처음’부터!</div>
+      <div class="count-sub" style="margin-top:8px">【공신력】【이성】【감성】 표시는 글자 수에서 빼고 셉니다.</div>
+    </div>
+
+    <div class="check-card">
+      <h3>제출 전 점검</h3>
+      <p class="desc">평가 기준과 같아요. 모두 초록불이 되면 PDF로 저장하세요.</p>
+      <ul class="checks" id="checks">
+        <li data-k="situ"><span class="dot"></span><span>연설 상황 5가지</span><span class="meta" id="m-situ">0/5</span></li>
+        <li data-k="msg"><span class="dot"></span><span>핵심 메시지</span></li>
+        <li data-k="title"><span class="dot"></span><span>제목</span></li>
+        <li data-k="cred"><span class="dot"></span><span>【공신력】 표시</span><span class="meta" id="m-cred">0개</span></li>
+        <li data-k="le"><span class="dot"></span><span>【이성】 또는 【감성】 표시</span><span class="meta" id="m-le">0개</span></li>
+        <li data-k="u"><span class="dot"></span><span>연결 표현 밑줄 2개 이상</span><span class="meta" id="m-u">0개</span></li>
+        <li data-k="len"><span class="dot"></span><span>분량 700~1,000자</span></li>
+        <li data-k="tpl"><span class="dot"></span><span>예시 틀의 ( )와 ~를 모두 내 글로 바꿨다</span><span class="meta" id="m-tpl"></span></li>
+        <li data-k="src" class="manual" role="checkbox" aria-checked="false" tabindex="0"><span class="dot"></span><span>(이성을 골랐다면) 근거의 출처를 밝혔다</span></li>
+        <li data-k="exp" class="manual" role="checkbox" aria-checked="false" tabindex="0"><span class="dot"></span><span>나의 경험과 그 속의 강점을 구체적으로 썼다</span></li>
+      </ul>
+    </div>
+
+    <button type="button" class="save-btn" id="saveBtn">PDF로 저장하기</button>
+    <p class="save-state" id="saveState">아직 저장된 내용이 없어요</p>
+
+    <details class="howto">
+      <summary>PDF 저장·제출 방법</summary>
+      <ol>
+        <li>‘PDF로 저장하기’를 눌러요.</li>
+        <li>인쇄 창의 <b>대상(프린터)</b>을 <b>‘PDF로 저장’</b>으로 바꿔요.</li>
+        <li>파일 이름이 <b>수행평가1_학번_이름</b>인지 확인하고 저장해요.</li>
+        <li>리로스쿨 과제방에 그 PDF 파일을 첨부해 제출해요.</li>
+      </ol>
+      <div style="color:var(--gray); font-size:12px">아이패드: 공유(□↑) → 프린트 → 미리보기를 두 손가락으로 벌리기 → 공유 → ‘파일에 저장’</div>
+    </details>
+    <div class="safety">
+      <b>글이 사라졌나요?</b>
+      <p>1분마다 기록을 남겨 두어요. 실수로 지웠다면 이전 기록에서 되살릴 수 있어요. 다른 기기로 옮길 때는 백업 파일을 쓰세요.</p>
+      <button type="button" class="sbtn" id="histBtn">↺ 이전 기록에서 되살리기</button>
+      <button type="button" class="sbtn" id="backupBtn">⤓ 백업 파일로 내려받기</button>
+      <button type="button" class="sbtn" id="importBtn">⤒ 백업 파일 불러오기</button>
+      <input type="file" id="importFile" accept=".json,application/json" hidden>
+    </div>
+    <button type="button" class="reset" id="resetBtn">처음부터 새로 쓰기</button>
+  </aside>
+</main>
+
+<div class="mbar">
+  <div class="mcount"><span id="mcnt">0</span>자 <small>/ 700~1,000</small></div>
+  <button type="button" id="saveBtn2">PDF로 저장</button>
+</div>
+
+<!-- 저장 전 확인 -->
+<div class="modal-bg" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <h3 id="modalTitle">저장하기 전에 확인해요</h3>
+    <div id="modalIssues"></div>
+    <div class="steps">
+      <b>다음 창에서</b>
+      <ol>
+        <li>대상(프린터) → <b>PDF로 저장</b></li>
+        <li>파일 이름 <b id="fnamePreview">수행평가1_학번_이름</b> 확인 후 저장</li>
+        <li>리로스쿨 과제방에 첨부</li>
+      </ol>
+    </div>
+    <div class="modal-btns">
+      <button type="button" class="btn-ghost" id="mBack">돌아가서 고치기</button>
+      <button type="button" class="btn-main" id="mGo">PDF로 저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 이전 기록 -->
+<div class="modal-bg" id="histModal" role="dialog" aria-modal="true" aria-labelledby="histTitle">
+  <div class="modal">
+    <h3 id="histTitle">이전 기록에서 되살리기</h3>
+    <p style="margin:0;font-size:13px;color:var(--gray)">되살리면 지금 글은 기록에 한 번 더 남겨 두니 안심하세요.</p>
+    <ul class="hist" id="histList"></ul>
+    <div class="modal-btns"><button type="button" class="btn-ghost" id="histClose">닫기</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- 인쇄용 양식 -->
+<div id="print"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ===== 선생님 설정 ===== */
+  var ALLOW_PASTE = false;     // true로 바꾸면 본문에 붙여넣기를 허용합니다.
+  var MIN_LEN = 700, MAX_LEN = 1000, SCALE = 1200;
+  var STORE_KEY = 'gyeseong-speech-2026-v1';
+  var LINKERS = ['먼저','다음으로','앞서 말씀드린 것처럼','예를 들어','그런데','그렇다면','이처럼','정리하자면','마지막으로'];
+  var TAG_RE = /【(공신력|이성|감성)】/g;
+  var TEMPLATE_INSERT = true;  // false로 바꾸면 예시 틀은 '보기'만 되고 본문에 넣기 버튼이 사라집니다.
+  var HISTORY_KEY = STORE_KEY + '-history', HISTORY_MAX = 20, SNAP_EVERY = 60 * 1000;
+
+  /* 예시 문장 틀: ( )는 학생이 바꿀 부분, ~는 이어서 쓸 부분 */
+  var TEMPLATES = [
+    {tab:'서론', role:'처음 · 약 150자', tip:'인사 → 미래의 나 소개 → 연설 상황 밝히기', tag:'',
+     text:'안녕하십니까, 저는 (기후 데이터 분석가 김계성)입니다. 먼저 (이 뜻깊은 자리에 초대해 주신 선생님들께 감사드립니다). 이곳에서 여러분과 함께하게 된 것을 영광으로 생각합니다. 오늘은 제게 아주 특별한 날입니다. 왜냐하면 (15년 전 제가 앉아 있던 바로 이 자리에 다시 서는) 날이기 때문입니다.'},
+    {tab:'본론 ①', role:'중간 1 · 약 300자 · 나의 경험', tip:'활동지 2-3 성장 스토리 + 1-1 강점을 꺼내 쓰기', tag:'【공신력】',
+     text:'이 자리에 서기까지 정말 많은 일들이 있었습니다. (고등학교 1학년 때, 저는 과학 동아리에서 학교 전기 사용량을 기록하기로 했습니다). ~ 하지만 (석 달쯤 지나자 친구들이 하나둘 기록을 빠뜨리기 시작했습니다). ~ 그때 저는 (기록표를 새로 만들어 점심시간마다 혼자서라도 기록했습니다). ~ 돌아보면 그 경험은 저의 (끈기)가 처음으로 빛을 발한 순간이었습니다.'},
+    {tab:'본론 ②', role:'중간 2 · 약 300자 · 문제와 근거', tip:'활동지 3-3 문제·가치 + 4-1 고른 무기', variants:[
+      {name:'이성 무기', tag:'【이성】',
+       text:'그렇다면 (기후 위기)는 왜 우리 모두의 문제일까요? (○○ 기관의 「○○ 보고서」, 20○○)에 따르면 ~ 이 자료가 우리에게 말해 주는 것은 ~'},
+      {name:'감성 무기', tag:'【감성】',
+       text:'(제 할머니는 사과 농사를 지으셨습니다). ~ 그 모습을 보며 저는 ~ 여러분의 기억 속에도 (달라진 계절)이 있지 않나요? ~'}]},
+    {tab:'결론', role:'끝 · 약 150자', tip:'활동지 3-4 핵심 메시지 + 청중에게 건네는 당부', tag:'',
+     text:'정리하자면, 오늘 제가 이 자리를 통해 전하고 싶은 말은 (세상을 바꾸는 사람은 끝까지 확인하는 사람)이라는 것입니다. 마지막으로 여러분께 부탁드립니다. (오늘 집에 가는 길에 궁금한 것 하나를 끝까지 찾아보세요). ~ 감사합니다.'}
+  ];
+  var TPL_HOLES = [];
+  TEMPLATES.forEach(function(t){ (t.variants || [t]).forEach(function(v){ (v.text.match(/\([^()]*\)/g) || []).forEach(function(h){ TPL_HOLES.push(h); }); }); });
+
+  var $ = function(id){ return document.getElementById(id); };
+  var FIELDS = ['sid','sname','when','who','event','aud','purpose','msg','title','letter'];
+  var editor = $('editor');
+  var manual = {src:false, exp:false};
+  var savedRange = null;
+
+  try{ document.execCommand('styleWithCSS', false, false); }catch(e){}
+
+  /* ---------- 예시 문장 틀 패널 ---------- */
+  var tplState = {i:0, v:0};
+  function tplHTML(text){
+    return esc(text).replace(/\([^()]*\)/g, function(m){ return '<span class="fill">' + m + '</span>'; })
+                    .replace(/~/g, '<span class="tilde">~</span>');
+  }
+  function renderTpl(){
+    var tabs = $('tplTabs'); tabs.innerHTML = '';
+    TEMPLATES.forEach(function(t, i){
+      var b = document.createElement('button'); b.type = 'button';
+      b.className = 'tab' + (i === tplState.i ? ' on' : ''); b.textContent = t.tab;
+      b.addEventListener('click', function(){ tplState = {i:i, v:0}; renderTpl(); });
+      tabs.appendChild(b);
+    });
+    var t = TEMPLATES[tplState.i], cur = t.variants ? t.variants[tplState.v] : t;
+    var h = '<div class="tpl-role">' + esc(t.role) + '</div><div class="tpl-tip">' + esc(t.tip) + '</div>';
+    if(t.variants){
+      h += '<div class="variants">' + t.variants.map(function(v, j){
+        return '<button type="button" class="variant' + (j === tplState.v ? ' on' : '') + '" data-v="' + j + '">' + esc(v.name) + '</button>';
+      }).join('') + '</div>';
+    }
+    h += '<div class="tpl-text">' + tplHTML(cur.text) + '</div>';
+    if(cur.tag) h += '<div class="tpl-tag">→ 이 부분을 쓴 문장 끝에 <b>' + cur.tag + '</b> 표시를 잊지 마세요.</div>';
+    if(TEMPLATE_INSERT) h += '<button type="button" class="tpl-btn" id="tplInsert">이 틀을 본문 커서 위치에 넣기</button>';
+    h += '<p class="tpl-note">넣은 뒤에는 <span class="fill">( )</span>를 내 내용으로 바꾸고, <span class="tilde">~</span> 자리에 이어서 써요. 연결 표현(먼저, 정리하자면 등)에 밑줄 치는 것도 잊지 마세요.</p>';
+    $('tplBody').innerHTML = h;
+    $('tplBody').querySelectorAll('.variant').forEach(function(b){
+      b.addEventListener('click', function(){ tplState.v = +b.getAttribute('data-v'); renderTpl(); });
+    });
+    var ins = $('tplInsert');
+    if(ins){
+      ins.addEventListener('mousedown', function(e){ e.preventDefault(); });
+      ins.addEventListener('click', function(){ insertTemplate(cur.text); });
+    }
+  }
+  function insertTemplate(text){
+    snapshot('예시 틀 넣기 전', true);
+    restoreRange();
+    var u = insideU(); if(u) moveCaretAfter(u);
+    var hasText = !!bodyText().replace(/\s/g,'').length;
+    if(hasText){ try{ document.execCommand('insertParagraph'); }catch(e){} }
+    if(!document.execCommand('insertText', false, text)) insertPlain(text);
+    update(); toast('틀을 넣었어요. ( )와 ~를 내 글로 바꿔 주세요');
+  }
+  $('tplToggle').addEventListener('click', function(){
+    var closed = $('tpl').classList.toggle('closed');
+    this.textContent = closed ? '글을 어떻게 시작할지 막막하다면? 예시 문장 틀 보기 ▾' : '예시 문장 틀 접기 ▴';
+  });
+
+  /* ---------- 연결 표현 칩 ---------- */
+  var chips = $('chips');
+  LINKERS.forEach(function(w){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.textContent = w;
+    b.addEventListener('mousedown', function(e){ e.preventDefault(); });
+    b.addEventListener('click', function(){ insertLinker(w); });
+    chips.appendChild(b);
+  });
+
+  /* ---------- 커서 위치 기억 (버튼을 눌러도 위치 유지) ---------- */
+  document.addEventListener('selectionchange', function(){
+    var sel = window.getSelection();
+    if(sel && sel.rangeCount && editor.contains(sel.anchorNode)) savedRange = sel.getRangeAt(0).cloneRange();
+  });
+  function restoreRange(){
+    editor.focus();
+    var sel = window.getSelection();
+    if(savedRange && editor.contains(savedRange.startContainer)){
+      sel.removeAllRanges(); sel.addRange(savedRange);
+    }else{
+      var r = document.createRange(); r.selectNodeContents(editor); r.collapse(false);
+      sel.removeAllRanges(); sel.addRange(r);
+    }
+  }
+  function insideU(){
+    var sel = window.getSelection(); if(!sel.rangeCount) return null;
+    var n = sel.anchorNode;
+    while(n && n !== editor){ if(n.nodeName === 'U') return n; n = n.parentNode; }
+    return null;
+  }
+  function moveCaretAfter(node){
+    var sel = window.getSelection(); var r = document.createRange();
+    r.setStartAfter(node); r.collapse(true); sel.removeAllRanges(); sel.addRange(r);
+  }
+
+  document.querySelectorAll('[data-tag]').forEach(function(b){
+    b.addEventListener('mousedown', function(e){ e.preventDefault(); });
+    b.addEventListener('click', function(){
+      restoreRange();
+      var u = insideU(); if(u) moveCaretAfter(u);
+      var tag = b.getAttribute('data-tag');
+      if(!document.execCommand('insertText', false, ' ' + tag + ' ')) insertPlain(' ' + tag + ' ');
+      update(); toast(tag + ' 표시를 넣었어요');
+    });
+  });
+  $('btnU').addEventListener('mousedown', function(e){ e.preventDefault(); });
+  $('btnU').addEventListener('click', function(){
+    restoreRange();
+    var sel = window.getSelection();
+    if(sel.isCollapsed){ toast('밑줄 칠 연결 표현을 먼저 드래그해 주세요'); return; }
+    document.execCommand('underline');
+    update();
+  });
+  function insertLinker(w){
+    restoreRange();
+    var u = insideU(); if(u) moveCaretAfter(u);
+    var ok = false;
+    try{ ok = document.execCommand('insertHTML', false, '<u>' + w + '</u> '); }catch(e){}
+    if(!ok){
+      var sel = window.getSelection(); var r = sel.getRangeAt(0);
+      var el = document.createElement('u'); el.textContent = w;
+      var sp = document.createTextNode(' ');
+      r.deleteContents(); r.insertNode(sp); r.insertNode(el); moveCaretAfter(sp);
+    }
+    update();
+  }
+  function insertPlain(t){
+    var sel = window.getSelection(); var r = sel.getRangeAt(0);
+    var n = document.createTextNode(t); r.deleteContents(); r.insertNode(n); moveCaretAfter(n);
+  }
+
+  /* ---------- 붙여넣기·끌어넣기 제한 ---------- */
+  editor.addEventListener('paste', function(e){
+    e.preventDefault();
+    if(!ALLOW_PASTE){ toast('본문에는 붙여넣기를 사용할 수 없어요. 직접 써 주세요.'); return; }
+    var t = (e.clipboardData || window.clipboardData).getData('text/plain');
+    document.execCommand('insertText', false, t);
+  });
+  editor.addEventListener('drop', function(e){ e.preventDefault(); });
+  editor.addEventListener('keydown', function(e){
+    // 굵게·기울임은 쓰지 않아요 (밑줄만 허용)
+    if((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'i' || e.key === 'B' || e.key === 'I')) e.preventDefault();
+  });
+
+  /* ---------- 집계 ---------- */
+  function bodyText(){
+    var t = editor.innerText || '';
+    return t.replace(/ /g,' ');
+  }
+  function countChars(){
+    var t = bodyText().replace(TAG_RE, '').replace(/\r?\n/g, '');
+    // 표시를 넣을 때 앞뒤로 붙는 공백이 겹치면 하나로
+    t = t.replace(/ {2,}/g, ' ').trim();
+    return Array.from(t).length;
+  }
+  function countTags(){
+    var t = bodyText(), c = {공신력:0, 이성:0, 감성:0}, m;
+    TAG_RE.lastIndex = 0;
+    while((m = TAG_RE.exec(t))) c[m[1]]++;
+    return c;
+  }
+  function countUnderlines(){
+    var n = 0;
+    editor.querySelectorAll('u').forEach(function(u){
+      if(u.parentNode.closest && u.parentNode.closest('u')) return;
+      var prev = u.previousSibling;
+      if(prev && prev.nodeName === 'U') return;   // 바로 붙은 밑줄은 하나로
+      if((u.textContent || '').replace(/\s| /g,'').length) n++;
+    });
+    return n;
+  }
+  function val(id){ return ($(id).value || '').trim(); }
+  function leftovers(){
+    var t = bodyText(), n = 0;
+    TPL_HOLES.forEach(function(h){ if(t.indexOf(h) >= 0) n++; });
+    n += (t.match(/[~～]/g) || []).length;
+    if(/○○/.test(t)) n++;
+    return n;
+  }
+
+  function update(){
+    var empty = !bodyText().replace(/\s/g,'').length;
+    editor.classList.toggle('is-empty', empty);
+    if(empty && editor.innerHTML !== '') { /* 빈 <br> 정리 */ if(!editor.querySelector('u')) editor.innerHTML = ''; }
+
+    var n = countChars();
+    $('cnt').textContent = n.toLocaleString('ko-KR');
+    $('mcnt').textContent = n.toLocaleString('ko-KR');
+    var fill = $('meterFill');
+    fill.style.width = Math.min(100, n / SCALE * 100) + '%';
+    var msg = $('cntMsg'); msg.className = 'count-msg';
+    if(n === 0){ msg.textContent = '첫 문장이 제일 어려워요. 활동지 5-1의 ‘처음’부터!'; fill.style.background = 'var(--warn)'; }
+    else if(n < MIN_LEN){ msg.textContent = (n < 350 ? '좋아요, 계속 가 봐요! ' : '조금만 더! ') + (MIN_LEN - n) + '자 남았어요.'; fill.style.background = 'var(--warn)'; }
+    else if(n <= MAX_LEN){ msg.textContent = '분량 딱 좋아요!'; msg.classList.add('ok'); fill.style.background = 'var(--ok)'; }
+    else { msg.textContent = (n - MAX_LEN) + '자 넘었어요. 덜어 낼 문장을 찾아봐요.'; msg.classList.add('over'); fill.style.background = 'var(--bad)'; }
+
+    var situ = ['when','who','event','aud','purpose'].filter(function(id){ return val(id); }).length;
+    var tags = countTags(); var uc = countUnderlines(); var lo = leftovers();
+    $('m-tpl').textContent = lo ? lo + '곳 남음' : '';
+    $('m-situ').textContent = situ + '/5';
+    $('m-cred').textContent = tags.공신력 + '개';
+    $('m-le').textContent = (tags.이성 + tags.감성) + '개';
+    $('m-u').textContent = uc + '개';
+    var st = {
+      situ: situ === 5, msg: !!val('msg'), title: !!val('title'),
+      cred: tags.공신력 > 0, le: (tags.이성 + tags.감성) > 0, u: uc >= 2,
+      len: n >= MIN_LEN && n <= MAX_LEN, src: manual.src, exp: manual.exp, tpl: n > 0 && lo === 0
+    };
+    document.querySelectorAll('#checks li').forEach(function(li){
+      var k = li.getAttribute('data-k'); li.classList.toggle('done', !!st[k]);
+      if(li.classList.contains('manual')) li.setAttribute('aria-checked', st[k] ? 'true' : 'false');
+    });
+    FIELDS.forEach(function(id){ $(id).classList.toggle('filled', !!val(id)); });
+
+    var sid = val('sid'), nm = val('sname');
+    document.title = (sid || nm) ? ('수행평가1_' + (sid || '학번') + '_' + (nm || '이름')) : '미래의 나를 담은 연설문 쓰기';
+    $('fnamePreview').textContent = '수행평가1_' + (sid || '학번') + '_' + (nm || '이름');
+    scheduleSave();
+    return {n:n, st:st, situ:situ, tags:tags, uc:uc, lo:lo};
+  }
+
+  document.querySelectorAll('#checks li.manual').forEach(function(li){
+    function tg(){ var k = li.getAttribute('data-k'); manual[k] = !manual[k]; update(); }
+    li.addEventListener('click', tg);
+    li.addEventListener('keydown', function(e){ if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); tg(); } });
+  });
+
+  /* ---------- 자동 저장 + 안전장치 ---------- */
+  var storageOK = (function(){ try{ var k = STORE_KEY + '-t'; localStorage.setItem(k, '1'); localStorage.removeItem(k); return true; }catch(e){ return false; } })();
+  try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
+
+  function collect(){
+    var data = {v:1, at:Date.now(), body:cleanHTML(editor), manual:{src:manual.src, exp:manual.exp}};
+    FIELDS.forEach(function(id){ data[id] = $(id).value; });
+    return data;
+  }
+  function hasContent(d){
+    d = d || collect();
+    return FIELDS.some(function(id){ return (d[id] || '').trim(); }) || !!(d.body || '').replace(/<[^>]+>/g,'').trim();
+  }
+  function applyData(d){
+    FIELDS.forEach(function(id){ $(id).value = typeof d[id] === 'string' ? d[id] : ''; });
+    editor.innerHTML = typeof d.body === 'string' ? cleanHTML(htmlToNode(d.body)) : '';
+    manual = {src:!!(d.manual && d.manual.src), exp:!!(d.manual && d.manual.exp)};
+  }
+  function htmlToNode(h){ var t = document.createElement('div'); t.innerHTML = h; return t; }
+
+  var saveTimer = null;
+  function scheduleSave(){ clearTimeout(saveTimer); saveTimer = setTimeout(save, 400); }
+  var lastSaved = null;
+  function save(){
+    if(!storageOK){ $('saveState').textContent = '자동 저장이 안 되는 환경이에요. 창을 닫지 마세요!'; return; }
+    var d = collect(), n = countChars();
+    // 한 번에 많이 지워졌다면(30자 이상) 지우기 직전 글을 기록에 남김
+    if(lastSaved && lastSaved.n - n >= 30) snapshot('많이 지워지기 직전', true, lastSaved.data, lastSaved.n);
+    lastSaved = {data:d, n:n};
+    try{
+      localStorage.setItem(STORE_KEY, JSON.stringify(d));
+      var d = new Date();
+      $('saveState').textContent = '이 기기에 자동 저장됨 · ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0');
+    }catch(e){
+      $('saveState').textContent = '자동 저장에 실패했어요. 창을 닫지 마세요!';
+    }
+  }
+
+  /* 기록(스냅숏): 1분마다 바뀐 내용이 있으면 남김 */
+  function readHist(){ try{ return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]') || []; }catch(e){ return []; } }
+  function snapshot(reason, force, data, n){
+    if(!storageOK) return;
+    var d = data || collect(); if(!hasContent(d)) return;
+    var list = readHist(); var sig = sigOf(d);
+    if(list.some(function(h){ return h.sig === sig; }) && !force) return;
+    if(list.length && list[0].sig === sig) return;
+    list.unshift({at:d.at, n:(n == null ? countChars() : n), reason:reason || '', sig:sig, data:d});
+    if(list.length > HISTORY_MAX) list.length = HISTORY_MAX;
+    try{ localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); }catch(e){
+      list.length = Math.max(1, Math.floor(list.length / 2));
+      try{ localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); }catch(e2){}
+    }
+  }
+  setInterval(function(){ snapshot('자동 기록'); }, SNAP_EVERY);
+
+  function sigOf(d){ return JSON.stringify([d.body, FIELDS.map(function(id){ return d[id]; })]); }
+  function hm(t){ var d = new Date(t); return d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0'); }
+  function openHist(){
+    clearTimeout(saveTimer); save();   // 아직 저장 대기 중인 변경을 먼저 반영
+    var curSig = sigOf(collect());
+    var list = readHist(), ul = $('histList'); ul.innerHTML = '';
+    if(!list.length){ ul.innerHTML = '<li style="color:var(--gray)">아직 남은 기록이 없어요. 글을 쓰면 1분마다 기록돼요.</li>'; }
+    list.forEach(function(h, i){
+      var first = (h.data.body || '').replace(/<[^>]+>/g,' ').replace(/&nbsp;|\s+/g,' ').trim().slice(0, 28);
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="h-time">' + hm(h.at) + '</span><span class="h-meta">' + h.n + '자' + (h.reason ? ' · ' + esc(h.reason) : '') + (first ? ' · ' + esc(first) + '…' : '') + '</span>';
+      var isCur = h.sig === curSig;
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = isCur ? '지금 글' : '되살리기';
+      if(isCur){ b.disabled = true; b.style.opacity = .4; }
+      b.addEventListener('click', function(){
+        if(!confirm(hm(h.at) + ' 기록(' + h.n + '자)으로 되살릴까요?')) return;
+        snapshot('되살리기 전', true);
+        applyData(h.data); update(); save();
+        $('histModal').classList.remove('open');
+        showBanner('ok', hm(h.at) + ' 기록으로 되살렸어요.');
+      });
+      li.appendChild(b); ul.appendChild(li);
+    });
+    $('histModal').classList.add('open');
+  }
+  $('histBtn').addEventListener('click', openHist);
+  $('histClose').addEventListener('click', function(){ $('histModal').classList.remove('open'); });
+  $('histModal').addEventListener('click', function(e){ if(e.target === $('histModal')) $('histModal').classList.remove('open'); });
+
+  /* 백업 파일 */
+  $('backupBtn').addEventListener('click', function(){
+    var d = collect(); d.kind = 'gyeseong-speech-backup';
+    var blob = new Blob([JSON.stringify(d, null, 1)], {type:'application/json'});
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = '연설문백업_' + (val('sid') || '학번') + '_' + (val('sname') || '이름') + '_' + hm(Date.now()).replace(':','') + '.json';
+    document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    toast('백업 파일을 내려받았어요');
+  });
+  $('importBtn').addEventListener('click', function(){ $('importFile').click(); });
+  $('importFile').addEventListener('change', function(){
+    var f = this.files && this.files[0]; if(!f) return;
+    var rd = new FileReader();
+    rd.onload = function(){
+      try{
+        var d = JSON.parse(rd.result);
+        if(d.kind !== 'gyeseong-speech-backup') throw 0;
+        if(hasContent() && !confirm('지금 쓰고 있는 글 대신 백업 파일의 글을 불러올까요? (지금 글은 기록에 남겨 둬요)')) return;
+        snapshot('불러오기 전', true);
+        applyData(d); update(); save();
+        showBanner('ok', '백업 파일(' + countChars() + '자)을 불러왔어요.');
+      }catch(e){ toast('이 페이지에서 만든 백업 파일이 아니에요'); }
+    };
+    rd.readAsText(f, 'utf-8'); this.value = '';
+  });
+
+  /* 알림 띠 */
+  function showBanner(kind, html, sticky){
+    var b = $('banner');
+    b.innerHTML = '<div class="banner-in ' + kind + '"><span>' + html + '</span>' + (sticky ? '' : '<button type="button" aria-label="닫기">×</button>') + '</div>';
+    b.hidden = false;
+    var x = b.querySelector('button'); if(x) x.addEventListener('click', function(){ b.hidden = true; });
+  }
+
+  function load(){
+    if(!storageOK){
+      showBanner('bad', '이 창에서는 자동 저장이 되지 않아요. 시크릿(비공개) 창이라면 일반 창으로 다시 열어 주세요. 창을 닫으면 글이 사라져요!', true);
+      return;
+    }
+    var raw = null;
+    try{ raw = localStorage.getItem(STORE_KEY); }catch(e){}
+    if(!raw) return;
+    try{
+      var d = JSON.parse(raw);
+      applyData(d);
+      if(hasContent(d)){
+        var t = new Date(d.at || Date.now());
+        showBanner('ok', '지난번에 쓰던 글을 그대로 불러왔어요 (' + (t.getMonth()+1) + '월 ' + t.getDate() + '일 ' + hm(t) + ' 저장). 이어서 쓰면 돼요.');
+      }
+    }catch(e){}
+  }
+
+  /* ---------- 본문 정리: 텍스트·줄바꿈·밑줄만 남김 ---------- */
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function cleanHTML(root){
+    // 문단 배열(각 문단은 안전한 HTML 문자열)로 바꾼 뒤 <div>로 다시 묶음
+    return toParagraphs(root).map(function(p){ return '<div>' + (p || '<br>') + '</div>'; }).join('');
+  }
+  function toParagraphs(root){
+    var paras = [''];
+    function walk(node, inU){
+      node.childNodes.forEach(function(ch){
+        if(ch.nodeType === 3){
+          var t = esc(ch.nodeValue.replace(/ /g,' '));
+          paras[paras.length-1] += inU && t.trim() ? '<u>' + t + '</u>' : t;
+        }else if(ch.nodeType === 1){
+          var tag = ch.nodeName;
+          var block = /^(DIV|P|LI|H\d|BLOCKQUOTE)$/.test(tag);
+          if(tag === 'BR'){ paras.push(''); return; }
+          if(block && paras[paras.length-1] !== '') paras.push('');
+          var u = inU || tag === 'U' || /underline/.test(ch.getAttribute('style') || '');
+          walk(ch, u);
+          if(block) paras.push('');
+        }
+      });
+    }
+    walk(root, false);
+    // 연속 빈 문단 정리
+    var out = []; var lastEmpty = true;
+    paras.forEach(function(p){
+      var empty = !p.replace(/<[^>]+>/g,'').trim();
+      if(empty){ if(!lastEmpty) out.push(''); lastEmpty = true; }
+      else { out.push(p.replace(/<\/u><u>/g,'')); lastEmpty = false; }
+    });
+    while(out.length && out[out.length-1] === '') out.pop();
+    return out;
+  }
+
+  /* ---------- 인쇄 양식 만들기 ---------- */
+  function buildPrint(){
+    var r = update();
+    var paras = toParagraphs(editor).filter(function(p){ return p.replace(/<[^>]+>/g,'').trim(); });
+    var tagCls = {공신력:'c', 이성:'l', 감성:'e'};
+    var body = paras.map(function(p){
+      return '<p>' + p.replace(/【(공신력|이성|감성)】/g, function(m, k){ return '<span class="tg ' + tagCls[k] + '">' + m + '</span>'; }) + '</p>';
+    }).join('');
+    var d = new Date();
+    var date = d.getFullYear() + '. ' + (d.getMonth()+1) + '. ' + d.getDate() + '.';
+    var h = ''
+      + '<div class="p-head"><span>2학년 화법과 언어 · 수행평가 1 「미래의 나를 담은 연설문 쓰기」</span><span>계성고</span></div>'
+      + '<div class="p-title"><span class="lb">[제목]</span>' + esc(val('title') || '(제목 없음)') + '</div>'
+      + '<div class="p-sec"><span class="p-lb">[학번/이름]</span> ' + esc(val('sid')) + ' ' + esc(val('sname')) + '</div>'
+      + '<div class="p-sec"><span class="p-lb">[연설 상황]</span><ul class="p-sit">'
+      +   '<li>- 연설 시점 : ' + esc(val('when')) + ' / 미래의 나 : ' + esc(val('who')) + '</li>'
+      +   '<li>- 연설 행사 : ' + esc(val('event')) + ' / 청중 : ' + esc(val('aud')) + '</li>'
+      +   '<li>- 연설 목적 : ' + esc(val('purpose')) + '</li></ul></div>'
+      + '<div class="p-sec"><span class="p-lb">[핵심 메시지]</span> ' + esc(val('msg')) + '</div>'
+      + '<div><span class="p-lb">[연설문 본문]</span><div class="p-body">' + (body || '<p>(본문 없음)</p>') + '</div>'
+      + '<div class="p-count">- ' + r.n.toLocaleString('ko-KR') + '자</div></div>';
+    if(val('letter')){
+      h += '<div class="p-msg"><span class="p-lb">[미래의 나가 지금의 나에게]</span> (점수 미반영)<br>' + esc(val('letter')).replace(/\n/g,'<br>') + '</div>';
+    }
+    h += '<div class="p-foot">작성일 ' + date + '</div>';
+    $('print').innerHTML = h;
+  }
+  window.addEventListener('beforeprint', buildPrint);
+
+  /* ---------- 저장 버튼 ---------- */
+  function openSave(){
+    var r = update(); var st = r.st; var issues = [];
+    if(!val('sid') || !val('sname')) issues.push('학번과 이름을 써 주세요.');
+    if(!st.situ) issues.push('연설 상황 5가지 중 ' + (5 - r.situ) + '칸이 비어 있어요.');
+    if(!st.msg) issues.push('핵심 메시지가 비어 있어요.');
+    if(!st.title) issues.push('제목이 비어 있어요.');
+    if(!st.cred) issues.push('【공신력】 표시가 없어요.');
+    if(!st.le) issues.push('【이성】 또는 【감성】 표시가 없어요.');
+    if(!st.u) issues.push('연결 표현 밑줄이 ' + r.uc + '개예요. 2개 이상 필요해요.');
+    if(r.n < MIN_LEN) issues.push('본문이 ' + r.n + '자예요. 700자 이상 써 주세요.');
+    if(r.n > MAX_LEN) issues.push('본문이 ' + r.n + '자예요. 1,000자 이하로 줄여 주세요.');
+    if(r.lo) issues.push('예시 틀의 ( ), ~, ○○ 가 ' + r.lo + '곳 남아 있어요. 내 글로 바꿔 주세요.');
+    var box = $('modalIssues');
+    if(issues.length){
+      box.innerHTML = '<p style="margin:0;color:var(--bad);font-weight:700">아직 채워지지 않은 부분이 있어요</p><ul>' + issues.map(function(s){ return '<li>' + esc(s) + '</li>'; }).join('') + '</ul>';
+      $('mGo').textContent = '그래도 저장';
+    }else{
+      box.innerHTML = '<p style="margin:0 0 12px;color:var(--ok);font-weight:700">모든 점검 항목을 채웠어요. 수고했어요!</p>';
+      $('mGo').textContent = 'PDF로 저장';
+    }
+    $('modal').classList.add('open');
+  }
+  $('saveBtn').addEventListener('click', openSave);
+  $('saveBtn2').addEventListener('click', openSave);
+  $('mBack').addEventListener('click', function(){ $('modal').classList.remove('open'); });
+  $('mGo').addEventListener('click', function(){
+    $('modal').classList.remove('open');
+    buildPrint(); save();
+    setTimeout(function(){ window.print(); }, 60);
+  });
+  $('modal').addEventListener('click', function(e){ if(e.target === $('modal')) $('modal').classList.remove('open'); });
+
+  $('resetBtn').addEventListener('click', function(){
+    if(!confirm('지금까지 쓴 내용을 모두 지우고 새로 쓸까요? 되돌릴 수 없어요.')) return;
+    if(!confirm('정말 지울까요? 제출할 PDF를 이미 저장했는지 확인하세요.')) return;
+    snapshot('새로 쓰기 전', true);
+    FIELDS.forEach(function(id){ $(id).value = ''; });
+    editor.innerHTML = ''; manual = {src:false, exp:false};
+    try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+    showBanner('ok', '새로 쓰기를 시작했어요. 지운 글은 ‘이전 기록에서 되살리기’로 찾을 수 있어요.');
+    update(); $('saveState').textContent = '새로 쓰기를 시작했어요';
+  });
+
+  /* ---------- 알림 ---------- */
+  var tt = null;
+  function toast(s){
+    var t = $('toast'); t.textContent = s; t.classList.add('show');
+    clearTimeout(tt); tt = setTimeout(function(){ t.classList.remove('show'); }, 1800);
+  }
+
+  /* ---------- 시작 ---------- */
+  FIELDS.forEach(function(id){ $(id).addEventListener('input', update); });
+  editor.addEventListener('input', update);
+  window.addEventListener('beforeunload', function(e){
+    save(); snapshot('페이지를 나가기 전');
+    if(hasContent()){ e.preventDefault(); e.returnValue = ''; return ''; }
+  });
+  window.addEventListener('pagehide', function(){ save(); });
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'hidden'){ save(); snapshot('다른 화면으로 이동'); } });
+  load(); renderTpl(); update(); snapshot('페이지를 연 시점');
+})();
+</script>
+</body>
+</html>
